@@ -1,0 +1,41 @@
+<h1>Countries</h1>
+
+<ul>
+	<% @gym_data.countries.each do |country| %>
+		<li><a href="<%= "?country=#{country[:code]}" %>"><%= country[:name] %></a></li>
+	<% end %>
+</ul>
+
+<% if params[:country].present? %>
+
+	<h2>Cities</h2>
+
+	<ul>
+		<% @gym_data.cities(params[:country]).each do |x| %>
+			<li>
+				<a href="<%= "?country=#{params[:country]}&city_id=#{x["id"]}" %>" class="<%= x["active"] ? "active": "inactive" %>">
+					<%= x["id"] %> - <%= x["name"] %>
+				</a>
+			</li>
+		<% end %>
+	</ul>
+<% end %>
+
+<% if params[:city_id].present? %>
+  	<h3>Zones</h3>
+    
+    <ul>
+
+	  	<% @gym_data.zones(params[:city_id], params[:country]).each do |zone| %>
+	  		<li class="<% zone[:active] ? "active" : "inactive" %>"><%= zone["id"]%> - <%= zone["name"]%></li>
+	  	<% end %>
+  	</ul>
+<% end %>
+
+
+
+<style>
+	.inactive{
+		opacity: 0.5;
+	}
+</style>
